@@ -7,58 +7,62 @@ This is empty on purpose! Your code to build the resume will go here.
 var bio = {
 	"name" : "Joseph Grant Plaster",
 	"role" : "Front-End Web Developer",
-	"contactInfo" : {
-		"email" : "grant.plaster@udacity.com",
-		"phone" : "336-430-9456"
-	},
 	"contacts" : {
-		"location" : "Sunnyvale"
+		"mobile" : "336-430-9456",
+		"email" : "grant.plaster@udacity.com",
+		"github" : "http://www.github.com/grantplasterUdacity",
+		"twitter": "http://www.twitter.com/Master_Plaster4",
+		"location": "Sunnyvale"
 	},
-	"pictureURL" : "images/fry.jpg",
 	"welcomeMessage" : "Hello, my name is Grant, and I work on the Front-End team at Udacity",
-	"skills" : ["Computer Programming in C and Java", "JavaScript", "People", "Communication", "Leadership"]
+	"skills" : ["Computer Programming in C and Java", "JavaScript", "People", "Communication", "Leadership"],
+	"biopic" : "images/fry.jpg",
+	display : function () {
+		$("#header").prepend(formattedRole);
+		$("#header").prepend(formattedName);
+		$("#topContacts, #footerContacts").append(HTMLemail.replace("%data%", bio.contacts.email));
+		$("#topContacts, #footerContacts").append(HTMLmobile.replace("%data%", bio.contacts.mobile));
+		$("#topContacts, #footerContacts").append(HTMLtwitter.replace("%data%", bio.contacts.twitter));
+		$("#topContacts, #footerContacts").append(HTMLgithub.replace("%data%", bio.contacts.github));
+		$("#topContacts, #footerContacts").append(HTMLlocation.replace("%data%", bio.contacts.location));
+		$("#header").append(HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage));
+		$("#header").append(HTMLbioPic.replace("%data%", bio.biopic));
+
+		if (bio.skills.length > 0) {
+			$("#header").append(HTMLskillsStart);
+			$("#skills").append(HTMLskills.replace("%data%", bio.skills[0]));
+			$("#skills").append(HTMLskills.replace("%data%", bio.skills[1]));
+			$("#skills").append(HTMLskills.replace("%data%", bio.skills[2]));
+			$("#skills").append(HTMLskills.replace("%data%", bio.skills[3]));
+			$("#skills").append(HTMLskills.replace("%data%", bio.skills[4]));
+		}
+	}
 }
+
+bio.display();
 
 var work = {};
 var newJob = {
-	"position" : "Course Manager",
 	"employer" : "Udacity",
-	"yearsWorked" : "2015 - present",
-	"city" : "Mountain View",
+	"title" : "Course Manager",
+	"location" : "Mountain View",
+	"dates" : "2015 - present",
 	"description" : "Course Manager for Front-End Web Development Nanodegree."
 };
 work.jobs = [newJob];
 
- $("#header").prepend(formattedRole);
- $("#header").prepend(formattedName);
- $("#header").append(HTMLemail.replace("%data%", bio.contactInfo.email));
- $("#header").append(HTMLmobile.replace("%data%", bio.contactInfo.phone));
- $("#header").append(HTMLlocation.replace("%data%", work.jobs[0].city));
- $("#header").append(HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage));
- $("#main").append(work["position"]);
- $("#header").prepend(HTMLbioPic.replace("%data%", bio.pictureURL));
-
- if (bio.skills.length > 0) {
- 	$("#header").append(HTMLskillsStart);
- 	$("#skills").append(HTMLskills.replace("%data%", bio.skills[0]));
- 	$("#skills").append(HTMLskills.replace("%data%", bio.skills[1]));
- 	$("#skills").append(HTMLskills.replace("%data%", bio.skills[2]));
- 	$("#skills").append(HTMLskills.replace("%data%", bio.skills[3]));
- 	$("#skills").append(HTMLskills.replace("%data%", bio.skills[4]));
- }
-
-function displayWork() {
+work.display = function displayWork() {
 	for (attribute in work.jobs) {
 		$("#workExperience").append(HTMLworkStart);
 		$(".work-entry:last").append(HTMLworkEmployer.replace("%data%", work.jobs[attribute].employer)
-			+ HTMLworkTitle.replace("%data%", work.jobs[attribute].position));
-		$(".work-entry:last").append(HTMLworkDates.replace("%data%", work.jobs[attribute].yearsWorked));
-		$(".work-entry:last").append(HTMLworkLocation.replace("%data%", work.jobs[attribute].city));
+			+ HTMLworkTitle.replace("%data%", work.jobs[attribute].title));
+		$(".work-entry:last").append(HTMLworkDates.replace("%data%", work.jobs[attribute].dates));
+		$(".work-entry:last").append(HTMLworkLocation.replace("%data%", work.jobs[attribute].location));
 		$(".work-entry:last").append(HTMLworkDescription.replace("%data%", work.jobs[attribute].description));
 	}
 }
 
-displayWork();
+work.display();
 
 function inName(string) {
 	var words = string.split(" ");
@@ -72,14 +76,14 @@ function inName(string) {
 var projects = {};
 var newProj1 = {
 	"title" : "Front-End Nanodegre",
-	"dates" : "2015-present",
+	"dates" : "2015 - present",
 	"description" : "Started on the Front-End Web Development Nanodegreee my first week at Udacity.",
 	"image" : "images/197x148.gif"
 };
 
 var newProj2 = {
 	"title" : "JavaScript Basics",
-	"dates" : "2015-present",
+	"dates" : "2015 - present",
 	"description" : "Completed the JavaScript Basics to make progress in the Nanodegree.",
 	"image" : "images/197x148.gif"
 };
@@ -101,20 +105,25 @@ projects.display();
 var education = {
 	"schools" : [{
 		"name" : "Cal Poly",
-		"location" : "San Luis Obispo"
+		"location" : "San Luis Obispo",
+		"degree" : "Bachelor of Science",
+		"majors" : ["Computer Science"],
+		"dates" : "06/13/2015",
+		"url" : "http://www.calpoly.edu"
 	}],
-	"cities" : ["San Luis Obispo"],
-	"majors" : ["Computer Science"],
-	"minors" : ["None"],
-	"gradYears" : [2015]
+	"onlineCourses" : [],
+	display : function () {
+		for (var index in education.schools) {
+			$("#education").append(HTMLschoolStart);
+			$(".education-entry:last").append(HTMLschoolName.replace("%data%", this.schools[index].name));
+			$(".education-entry:last").append(HTMLschoolDegree.replace("%data%", education.schools[index].degree));
+			$(".education-entry:last").append(HTMLschoolDates.replace("%data%", education.schools[index].dates));
+			$(".education-entry:last").append(HTMLschoolLocation.replace("%data%", education.schools[index].location));
+			$(".education-entry:last").append(HTMLschoolMajor.replace("%data%", education.schools[index].majors));
+		}
+	}
 };
-education["yearsAttended"] = ["2011 - 2015"];
 
-$("#education").append(HTMLschoolStart);
-$(".education-entry:last").append(HTMLschoolName.replace("%data%", education.schools[0].name));
-$(".education-entry:last").append(HTMLschoolDegree.replace("%data%", "Bachelor of Science"));
-$(".education-entry:last").append(HTMLschoolDates.replace("%data%", education.yearsAttended[0]));
-$(".education-entry:last").append(HTMLschoolLocation.replace("%data%", education.cities[0]));
-$(".education-entry:last").append(HTMLschoolMajor.replace("%data%", education.majors[0]));
+education.display();
 
 $("#map-div").append(googleMap);
